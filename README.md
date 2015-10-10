@@ -1,2 +1,2 @@
 # gasolinera
-Brazilian gas station info project
+Gas station project
