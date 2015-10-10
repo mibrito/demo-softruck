@@ -1,21 +1,30 @@
 {
-  "name": "gasolinera",
+  "name": "gastruck",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index | ./node_modules/.bin/bunyan -L",
+    "develop": "DEBUG=* ./node_modules/.bin/nodemon index | ./node_modules/.bin/bunyan -L"
   },
   "author": "Michele Brito Pinheiro",
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.10.2",
+    "body-parser": "^1.14.1",
+    "bunyan": "^1.5.1",
+    "cors": "^2.7.1",
+    "debug": "^2.2.0",
     "express": "^4.13.3",
     "htmlparser": "^1.7.7",
-    "htmlparser2": "^3.8.3",
     "lodash": "^3.10.1",
     "mongoose": "^4.1.10",
     "reqwest": "^2.0.4",
+    "soupselect": "^0.2.0",
     "xhr2": "^0.1.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.7.1"
   }
 }

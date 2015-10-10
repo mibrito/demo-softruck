@@ -1,139 +1,66 @@
-var _ = require('lodash');
-var reqwest = require('reqwest');
-var select = require('soupselect').select;
-var htmlparser = require('htmlparser');
+// ./index.js
 
 
-var config = require('./config/crawler');
+var cors = require('cors');	// cross doamin requests
+var bunyan = require('bunyan');	// logger
 
-var crawlStatistics = function (){
-	return reqwest({
-		url: 'http://www.anp.gov.br/preco/prc/Resumo_Por_Estado_Municipio.asp',
-		method: 'post',
-		data: {
-			'selSemana': '850*',
-			'selCombustivel': '487*Gasolina',
-			'selEstado': config.estado[0]
+var express	= require('express');
+var bodyParser	= require('body-parser');
+
+var mongoose = require('mongoose');
+
+
+// Setups ======================================================================
+
+db = require('./lib/db');		// always call before use models ()
+db.connect();
+
+// set our port
+var port	= process.env.PORT || 3000;
+var server = express();
+
+// logger
+var log = bunyan.createLogger({
+	name: "gastruck",		// logger name
+	serializers: {
+		req: bunyan.stdSerializers.req,		// standard bunyan req serializer
+		err: bunyan.stdSerializers.err		// standard bunyan error serializer
+	},
+	streams: [
+		{
+		level: 'info',		// loging level
+		stream: process.stdout		// log INFO and above to stdout
 		}
-	}).then(function(body) {
-
-		//now we have the whole body, parse it and select the nodes we want...
-		var handler = new htmlparser.DefaultHandler(function(err, dom) {
-			if (err) {
-				console.error(err);
-			} else {
-
-				// soupselect happening here...
-				var tr = select(dom, 'tr');
-
-				tr = _.drop(tr, 3);
-
-				var el = {};
-
-				tr.forEach(function(values) {
-					values.children.forEach(function(td){
-						el = td.children[0]
-						if(el.type === 'tag'){
-							console.log(el.raw.replace("a class=linkpadrao href=javascript:Direciona", '').replace(/(\(|\)|'|;)/g, ''));
-						}else{
-							console.log(el.data);
-						}
-					})
-				})
-			}
-		}, { verbose: true, ignoreWhitespace: true });
-
-		var parser = new htmlparser.Parser(handler);
-		parser.parseComplete(body);
-
-	}).catch(function(error) {
-		console.log(error);
-	});
-}
-
-crawlStatistics.displayName = 'crawlStatistics';
-
-// crawlState();
+	]
+});
 
 
-/**
- * [crawlStations description]
- * @return {[type]} [description]
- */
-var crawlStations = function(cod_semana, cod_combustivel, selMunicipio){
-	return reqwest({
-		url: 'http://www.anp.gov.br/preco/prc/Resumo_Semanal_Posto.asp',
-		method: 'post',
-		data: {
-			'cod_semana': cod_semana,
-			'cod_combustivel': cod_combustivel,
-			'selMunicipio': selMunicipio
-		}
-	}).then(function(body) {
-		//now we have the whole body, parse it and select the nodes we want...
-		var handler = new htmlparser.DefaultHandler(function(err, dom) {
-			if (err) {
-				console.error(err);
-			} else {
-				var pricesTemplate = _.clone(config.pricesTemplate);
-				var stationTemplate = _.clone(config.stationTemplate);
+// Apply middlewares ===========================================================
 
-				// soupselect happening here...
-				var tr = select(dom, 'div.multi_box3 table.table_padrao tr');
+server.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(function (req, res, next) {
+	log.info({req:req}, req.method);
+	next();
+});
 
-				tr = _.drop(tr, 1);
+// Routes ======================================================================
 
-				
+// main request
+server.get( '/', function(req, res){
+	res.send("Wellcome to gastruck API!");
+});
 
-				tr.forEach(function(values) {
-					pricesTemplate = _.merge(pricesTemplate, config.pricesTemplate);
-					stationTemplate = _.merge(stationTemplate, config.stationTemplate);
-					stationTemplate.prices = [];
-					var cnt = 0;
+//require('./routes/posts.routes')(server, express, log);
 
-					values = values.children;
-					
-					_.forEach(stationTemplate, function(item, key){
-						if(key === 'prices') return;
-						if(key === 'area'){
-							stationTemplate[key] = values[cnt++].children[0].children[0].data;
-						}else{
-							stationTemplate[key] = values[cnt++].children[0].data;
-						}
-					});
 
-					
-					_.forEach(pricesTemplate, function(item, key){
+// Start app ===================================================================
 
-						if(key === 'type'){
-							pricesTemplate[key] = config.combustivel[cod_combustivel].name;
-						}else {
-							var data = values[cnt++].children[0].data;
+// startup our app at http://localhost:port
+server.listen(port);
 
-							if(key === 'date'){
-								pricesTemplate[key] = data.replace(/\//g,'-');
-							}else{
-								pricesTemplate[key] = data.replace(',', '.');
-							}
-						}
-					});
-					
-					stationTemplate.prices.push(pricesTemplate);
-					console.log(stationTemplate);
-				});
-			}
-		});
+// shoutout to the user
+log.info('Magic happens on port ' + port);
 
-		var parser = new htmlparser.Parser(handler);
-		parser.parseComplete(body);
-
-	}).catch(function(error) {
-		console.log(error);
-	});
-}
-
-crawlStations.displayName = 'crawlStations';
-
-crawlStations('851', '487', '6*CRUZEIRO@DO@SUL');
-
-//module.exports = crawlState;
+// expose server
+exports = module.exports = server;
