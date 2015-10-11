@@ -51,6 +51,23 @@ server.get( '/', function(req, res){
 	res.send("Wellcome to gastruck API!");
 });
 
+server.get( '/states', function(req, res){
+	return db.models.States.find({})
+		.then(function(states){
+			return res.json(states);
+		});
+});
+
+server.get( '/citiesHistory', function(req, res){
+	return db.models.CitiesHistory.find({})
+		.then(function(citiesHistory){
+			var body = '';
+			
+			return res.json(citiesHistory);
+		});
+});
+
+
 //require('./routes/posts.routes')(server, express, log);
 
 
