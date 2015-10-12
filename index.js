@@ -37,6 +37,7 @@ var log = bunyan.createLogger({
 
 // Apply middlewares ===========================================================
 
+server.use(cors());
 server.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(function (req, res, next) {
@@ -48,7 +49,11 @@ server.use(function (req, res, next) {
 
 // main request
 server.get( '/', function(req, res){
-	res.send("Wellcome to gastruck API!");
+	return db.models.Cities.find({})
+		.populate('_state')
+		.then(function(cities){
+				return res.json(cities);
+			});
 });
 
 server.get( '/states', function(req, res){
@@ -58,15 +63,26 @@ server.get( '/states', function(req, res){
 		});
 });
 
-server.get( '/citiesHistory', function(req, res){
-	return db.models.CitiesHistory.find({})
-		.then(function(citiesHistory){
-			var body = '';
-			
-			return res.json(citiesHistory);
+server.get( '/cities', function(req, res){
+	return db.models.Cities.find({})
+		.then(function(cities){	
+			return res.json(cities);
 		});
 });
 
+server.get( '/stations', function(req, res){
+	return db.models.Stations.find({})
+		.then(function(stations){	
+			return res.json(stations);
+		});
+});
+
+server.get( '/prices', function(req, res){
+	return db.models.Prices.find({})
+		.then(function(prices){	
+			return res.json(prices);
+		});
+});
 
 //require('./routes/posts.routes')(server, express, log);
 
