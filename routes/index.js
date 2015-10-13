@@ -9,7 +9,7 @@ var router = require('express').Router();
 var getAll = function getAll (req, res){
 	db.models.Cities.aggregate({
 		$group: {
-			_id: '$name',
+			_id: '$state',
 			statistics: { $push: '$statistics' },
 			dates: { $last: '$dates' }
   		}

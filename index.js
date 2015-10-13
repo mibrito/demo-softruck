@@ -57,7 +57,8 @@ server.use('/states', require('./routes/states'));
 // cities
 server.use('/cities', require('./routes/cities'));
 
-
+// cities
+server.use('/stations', require('./routes/stations'));
 
 server.get( '/stations', function(req, res){
 	return db.models.Stations.find({})
