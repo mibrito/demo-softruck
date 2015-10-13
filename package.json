@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "repository" :{
-    "type" : "git",
-    "url" : "https://github.com/mibrito/gastruck_server.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mibrito/gastruck_server.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -18,8 +18,10 @@
     "bluebird": "^2.10.2",
     "body-parser": "^1.14.1",
     "bunyan": "^1.5.1",
+    "cheerio": "^0.19.0",
     "cors": "^2.7.1",
     "debug": "^2.2.0",
+    "ejs": "^2.3.4",
     "express": "^4.13.3",
     "htmlparser": "^1.7.7",
     "iconv": "^2.1.11",

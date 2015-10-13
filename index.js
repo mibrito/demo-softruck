@@ -1,6 +1,6 @@
 // ./index.js
 
-
+var _ = require('lodash');
 var cors = require('cors');	// cross doamin requests
 var bunyan = require('bunyan');	// logger
 
@@ -21,7 +21,7 @@ var server = express();
 
 // logger
 var log = bunyan.createLogger({
-	name: "gastruck",		// logger name
+	name: 'gastruck',		// logger name
 	serializers: {
 		req: bunyan.stdSerializers.req,		// standard bunyan req serializer
 		err: bunyan.stdSerializers.err		// standard bunyan error serializer
@@ -36,7 +36,6 @@ var log = bunyan.createLogger({
 
 
 // Apply middlewares ===========================================================
-
 server.use(cors());
 server.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -47,28 +46,18 @@ server.use(function (req, res, next) {
 
 // Routes ======================================================================
 
-// main request
-server.get( '/', function(req, res){
-	return db.models.Cities.find({})
-		.populate('_state')
-		.then(function(cities){
-				return res.json(cities);
-			});
-});
+// APPLY ROUTES ================================================================
 
-server.get( '/states', function(req, res){
-	return db.models.States.find({})
-		.then(function(states){
-			return res.json(states);
-		});
-});
+// index
+server.use(require('./routes/index'));
 
-server.get( '/cities', function(req, res){
-	return db.models.Cities.find({})
-		.then(function(cities){	
-			return res.json(cities);
-		});
-});
+// states
+server.use('/states', require('./routes/states'));
+
+// cities
+server.use('/cities', require('./routes/cities'));
+
+
 
 server.get( '/stations', function(req, res){
 	return db.models.Stations.find({})
