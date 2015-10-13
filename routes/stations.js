@@ -6,6 +6,15 @@ var db = require('../lib/db');
 // router to create citie routes...
 var router = require('express').Router();
 
+var getAll = function(req, res){
+	db.models.Stations.find()
+		.then(function(stations){
+			return res.json(stations);
+		});
+}
+
+router.get('/', getAll);
+
 /**
  * [getByName get cities by name]
  * @param  {[Object]} req [request]
