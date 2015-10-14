@@ -2,6 +2,7 @@ var Promise = require('bluebird');
 var _ = require('lodash');
 
 var db = require('../lib/db');
+var ObjectId = db.ObjectId;
 
 // router to create citie routes...
 var router = require('express').Router();
@@ -36,6 +37,19 @@ var getByName = function getByName(req, res) {
 		});
 };
 
-router.get('/:name', getByName);
+router.get('/name/:name', getByName);
+
+var getById = function getById (req, res){
+	
+	if(!req.params.id) return req.status(404).send('Not Found');
+	db.models.Cities.findById(ObjectId(req.params.id))
+		.sort('name')
+		.populate('stations', 'name')
+		.then(function(stations){
+			res.json(stations);
+		})
+};
+
+router.get('/id/:id', getById);
 
 module.exports = router;

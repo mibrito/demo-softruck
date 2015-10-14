@@ -2,6 +2,7 @@ var Promise = require('bluebird');
 var _ = require('lodash');
 
 var db = require('../lib/db');
+var ObjectId = db.ObjectId;
 
 // router to create citie routes...
 var router = require('express').Router();
@@ -14,11 +15,12 @@ var router = require('express').Router();
  */
 var getAll = function getAll(req, res){
 	db.models.States.find({})
+		.sort('name')
 		.then(function(states){
 			return res.json(states);
 		});
 }
-router.get('/', getAll);
+router.get('', getAll);
 
 var getByName = function getByName (req, res){
 	if(!req.params.name) return req.status(404).send('Not Found');
@@ -28,5 +30,19 @@ var getByName = function getByName (req, res){
 		})
 };
 
-router.get('/:name', getByName);
+router.get('/name/:name', getByName);
+
+var getById = function getById (req, res){
+	
+	if(!req.params.id) return req.status(404).send('Not Found');
+	db.models.States.findById(ObjectId(req.params.id))
+		.sort('name')
+		.populate('cities', 'name statistics')
+		.then(function(states){
+			res.json(states);
+		})
+};
+
+router.get('/id/:id', getById);
+
 module.exports = router;

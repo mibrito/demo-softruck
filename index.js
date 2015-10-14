@@ -65,22 +65,8 @@ server.use('/cities', require('./routes/cities'));
 // cities
 server.use('/stations', require('./routes/stations'));
 
-server.get( '/stations', function(req, res){
-	return db.models.Stations.find({})
-		.then(function(stations){	
-			return res.json(stations);
-		});
-});
-
-server.get( '/prices', function(req, res){
-	return db.models.Prices.find({})
-		.then(function(prices){	
-			return res.json(prices);
-		});
-});
-
-//require('./routes/posts.routes')(server, express, log);
-
+// cities
+server.use('/crawl', require('./routes/crawl'));
 
 // Start app ===================================================================
 
