@@ -14,9 +14,9 @@ var router = require('express').Router();
  */
 var getAll = function getAll(req, res){
 	db.models.States.find({})
-		.then(function(cities){
-			return res.json(cities);
-		})
+		.then(function(states){
+			return res.json(states);
+		});
 }
 router.get('/', getAll);
 

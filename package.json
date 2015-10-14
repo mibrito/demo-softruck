@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index | ./node_modules/.bin/bunyan -L",
-    "develop": "DEBUG=* ./node_modules/.bin/nodemon index | ./node_modules/.bin/bunyan -L"
+    "develop": "./node_modules/.bin/nodemon index | ./node_modules/.bin/bunyan -L"
   },
   "author": "Michele Brito Pinheiro",
   "license": "MIT",

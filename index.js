@@ -36,6 +36,9 @@ var log = bunyan.createLogger({
 
 
 // Apply middlewares ===========================================================
+
+// set the view engine to ejs
+server.set('view engine', 'ejs');
 server.use(cors());
 server.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 server.use(bodyParser.urlencoded({ extended: true }));
@@ -48,8 +51,10 @@ server.use(function (req, res, next) {
 
 // APPLY ROUTES ================================================================
 
+var Cities = db.models.Cities;
+
 // index
-server.use(require('./routes/index'));
+server.get('/', require('./routes/index'));
 
 // states
 server.use('/states', require('./routes/states'));

@@ -1,0 +1,70 @@
+<% var noComma = true; %>
+<% stateName = cities[0].state.name %>
+[
+	{
+		"name": "<%- stateName %>",
+		"cities": [{
+	<% for(var state=0; state<cities.length; state++) { %>
+	<% if(!noComma) { %>,<% }else{ noComma = false; } %>
+
+	<% if(stateName !== cities[state].state.name){ stateName = cities[state].state.name %>
+		{
+		"name": "<%- stateName %>",
+		"cities": [{
+	<% } %>
+	
+			"name": "<%- cities[state].name %>",
+			"statistics": [
+			<% for(var stat=0; stat<cities[state].statistics.length; stat++){ %>
+				{
+					"type": "<%- cities[state].statistics[stat].fuelType %>",
+					"consumerPrice": [{
+						"averagePrice": <%- cities[state].statistics[stat].consumerPrice[0].averagePrice %>,
+						"standardDeviation": <%- cities[state].statistics[stat].consumerPrice[0].standardDeviation %>,
+						"minPrice": <%- cities[state].statistics[stat].consumerPrice[0].minPrice %>,
+						"maxPrice": <%- cities[state].statistics[stat].consumerPrice[0].maxPrice %>,
+						"averageMargin": <%- cities[state].statistics[stat].consumerPrice[0].averageMargin %>
+						
+					}],
+					"distributionPrice": [{
+						"averagePrice": <%- cities[state].statistics[stat].distributionPrice[0].averagePrice %>,
+						"standardDeviation": <%- cities[state].statistics[stat].distributionPrice[0].standardDeviation %>,
+						"minPrice": <%- cities[state].statistics[stat].distributionPrice[0].minPrice %>,
+						"maxPrice": <%- cities[state].statistics[stat].distributionPrice[0].maxPrice %>
+						
+					}]
+				}<% if(stat < cities[state].statistics.length-1){ %>,<% } %>
+			<% } %>
+			],
+			"stations": [
+			<% for(var station=0; station < cities[state].stations.length; station++){ %>
+				{
+					"name": "<%- cities[state].stations[station].name %>",
+					"address": "<%- cities[state].stations[station].address %>",
+					"area": "<%- cities[state].stations[station].area %>",
+					"flag": "<%- cities[state].stations[station].flag %>",
+					"prices": [
+						<% for(var price=0; price < cities[state].stations[station].prices.length; price++ ){ %>
+							{
+								"type": "<%- cities[state].stations[station].prices[price].fuelType %>",
+								"sellPrice": <%- cities[state].stations[station].prices[price].sellPrice %>,
+								"buyPrice": <%- cities[state].stations[station].prices[price].buyPrice %>,
+								"saleMode": "<%- cities[state].stations[station].prices[price].saleMode %>",
+								"provider": "<%- cities[state].stations[station].prices[price].provider %>",
+								"date": "<%- cities[state].stations[station].prices[price].date %>"
+							}<% if(price < cities[state].stations[station].prices.length-1){ %>,<% } %>
+						<% } %>
+					]
+				}<% if(station < cities[state].stations.length-1){ %>,<% } %>
+			<% }  %>
+			]
+	<% if(state >= cities.length-1 || stateName !== cities[state+1].state.name){ %>
+		}],
+		"dates": {
+			"from":<%- JSON.stringify(cities[state].state.dates.from) %>,
+			"to":<%- JSON.stringify(cities[state].state.dates.to) %>
+		}
+	}
+	<% } %>
+	<% } %>
+]
