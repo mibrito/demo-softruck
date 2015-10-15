@@ -37,7 +37,7 @@ var getById = function getById (req, res){
 	if(!req.params.id) return req.status(404).send('Not Found');
 	db.models.States.findById(ObjectId(req.params.id))
 		.sort('name')
-		.populate('cities', 'name statistics')
+		.populate('cities')
 		.then(function(states){
 			res.json(states);
 		})

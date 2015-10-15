@@ -44,7 +44,7 @@ var getById = function getById (req, res){
 	if(!req.params.id) return req.status(404).send('Not Found');
 	db.models.Cities.findById(ObjectId(req.params.id))
 		.sort('name')
-		.populate('stations', 'name')
+		.populate('stations', 'name prices')
 		.then(function(stations){
 			res.json(stations);
 		})
