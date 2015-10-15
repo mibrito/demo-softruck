@@ -1,3 +1,7 @@
+/*
+ * File that contains the main endpoint, which contains all data
+ * from database
+ */
 var Promise = require('bluebird');
 var _ = require('lodash');
 
@@ -7,6 +11,7 @@ var States = db.models.States;
 
 // router to create citie routes...
 var router = require('express').Router();
+
 
 var getAll = function getAll (req, res){
 	Cities.find({ }) //

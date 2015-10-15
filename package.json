@@ -8,7 +8,6 @@
     "url": "https://github.com/mibrito/gastruck_server.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index | ./node_modules/.bin/bunyan -L",
     "develop": "./node_modules/.bin/nodemon index | ./node_modules/.bin/bunyan -L"
   },

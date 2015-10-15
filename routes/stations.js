@@ -1,3 +1,6 @@
+/*
+ * File with all the endpoints to get info about stations
+ */
 var Promise = require('bluebird');
 var _ = require('lodash');
 
@@ -7,6 +10,10 @@ var ObjectId = db.ObjectId;
 // router to create citie routes...
 var router = require('express').Router();
 
+
+/*
+ * Get an array with all stations
+ */
 var getAll = function(req, res){
 	db.models.Stations.find()
 		.then(function(stations){
@@ -17,10 +24,7 @@ var getAll = function(req, res){
 router.get('/', getAll);
 
 /**
- * [getByName get cities by name]
- * @param  {[Object]} req [request]
- * @param  {[Object]} res [response]
- * @return {[Response<json>]}     [json with all data]
+ * Get an array of stations by name
  */
 var getByName = function getByName(req, res) {
 	if(!req.params.name) return req.status(404).send('Not Found');
@@ -32,6 +36,10 @@ var getByName = function getByName(req, res) {
 };
 
 router.get('/name/:name', getByName);
+
+/*
+ * Get a station from its id
+ */
 
 var getById = function getById (req, res){
 	

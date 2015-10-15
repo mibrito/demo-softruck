@@ -1,3 +1,7 @@
+/**
+ * File that contains all endpoints for cities requests
+ */
+
 var Promise = require('bluebird');
 var _ = require('lodash');
 
@@ -7,11 +11,9 @@ var ObjectId = db.ObjectId;
 // router to create citie routes...
 var router = require('express').Router();
 
-/**
- * [getAll get all cities]
- * @param  {[Object]} req [request]
- * @param  {[Object]} res [response]
- * @return {[Response<json>]}     [json with all data]
+
+/*
+ * Get an array of all cities from database
  */
 var getAll = function getAll(req, res) {
 	db.models.Cities.find({})
@@ -19,13 +21,12 @@ var getAll = function getAll(req, res) {
 			return res.json(cities);
 		})
 }
+
 router.get('/', getAll);
 
-/**
- * [getByName get cities by name]
- * @param  {[Object]} req [request]
- * @param  {[Object]} res [response]
- * @return {[Response<json>]}     [json with all data]
+
+/*
+ * Get an array of cities by name
  */
 var getByName = function getByName(req, res) {
 	if (!req.params.name) return res.status(404).send('not found');
@@ -39,6 +40,10 @@ var getByName = function getByName(req, res) {
 
 router.get('/name/:name', getByName);
 
+
+/*
+ * Get a city by its id
+ */
 var getById = function getById (req, res){
 	
 	if(!req.params.id) return req.status(404).send('Not Found');

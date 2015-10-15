@@ -53,20 +53,20 @@ server.use(function (req, res, next) {
 
 var Cities = db.models.Cities;
 
-// index
+// index endpoint
 server.get('/', require('./routes/index'));
 
-// states
+// states endpoints
 server.use('/states', require('./routes/states'));
 
-// cities
+// cities endpoints
 server.use('/cities', require('./routes/cities'));
 
-// cities
+// station endpoints
 server.use('/stations', require('./routes/stations'));
 
-// cities
-server.use('/crawl', require('./routes/crawl'));
+// meta endpoints
+server.use('/meta', require('./routes/meta'));
 
 // Start app ===================================================================
 

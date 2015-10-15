@@ -1,3 +1,7 @@
+/*
+ * File that contains the endpoint to get states info.
+ */
+
 var Promise = require('bluebird');
 var _ = require('lodash');
 
@@ -7,11 +11,8 @@ var ObjectId = db.ObjectId;
 // router to create citie routes...
 var router = require('express').Router();
 
-/**
- * [getAll get all states]
- * @param  {[Object]} req [request]
- * @param  {[Object]} res [response]
- * @return {[Response<json>]}     [json with all data]
+/*
+ * Get an array of all states
  */
 var getAll = function getAll(req, res){
 	db.models.States.find({})
@@ -22,9 +23,14 @@ var getAll = function getAll(req, res){
 }
 router.get('', getAll);
 
+/*
+ * Get an array of states by name
+ */
 var getByName = function getByName (req, res){
 	if(!req.params.name) return req.status(404).send('Not Found');
 	db.models.States.find({ name: req.params.name })
+		.sort('-date.to')
+		.limit(27)
 		.then(function(states){
 			res.json(states);
 		})
@@ -32,6 +38,9 @@ var getByName = function getByName (req, res){
 
 router.get('/name/:name', getByName);
 
+/*
+ * Get a state by id
+ */
 var getById = function getById (req, res){
 	
 	if(!req.params.id) return req.status(404).send('Not Found');
