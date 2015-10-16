@@ -117,9 +117,9 @@ PORT=3000
 }
 ```
 
-## Routes
+## API Endpoints
 ```
-/ : Return all objects in a unique request
+/ : Return all objects in a single request
 
 /meta/dates : Get the date of last update
 
