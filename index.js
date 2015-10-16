@@ -68,6 +68,9 @@ server.use('/stations', require('./routes/stations'));
 // meta endpoints
 server.use('/meta', require('./routes/meta'));
 
+// find endpoints
+server.use('/find', require('./routes/find'));
+
 // Start app ===================================================================
 
 // startup our app at http://localhost:port

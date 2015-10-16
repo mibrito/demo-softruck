@@ -8,7 +8,7 @@ and follow its instructions.
 ## Install
 
 ```
-git clone https://github.com/mibrito/gastruckcrawler.git
+git clone https://github.com/mibrito/gastruckapi.git
 npm install
 ```
 

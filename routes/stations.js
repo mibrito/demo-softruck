@@ -47,7 +47,6 @@ var getById = function getById (req, res){
 	db.models.Stations.findById(ObjectId(req.params.id))
 		.sort('name')
 		.then(function(station){
-			console.log(station);
 			res.json(station);
 		})
 };
