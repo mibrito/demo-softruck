@@ -117,6 +117,27 @@ PORT=3000
 }
 ```
 
+## Routes
+```
+/ : Return all objects in a unique request
+
+/meta/dates : Get the date of last update
+
+/find/:name : Seach for any ocurrrency of name on states, cites and stations (/str/i)
+
+/states : Get all states
+/states/name/:name : Get an array of states by name
+/states/id/:id : Get a state by id
+
+/cities : Get an array of all cities from database
+/cities/name/:name : Get an array of cities by name
+/cities/id/:id : Get a city by its id
+
+/stations : Get an array with all stations
+/stations/name/:name : Get an array of stations by name
+/stations/id/id : Get a station from its id
+```
+
 ## Libs used
 
 ## See also
